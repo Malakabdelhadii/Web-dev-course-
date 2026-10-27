@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #FFF0F5;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            width: 500px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #C06086;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #F2B6CE;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        #add {
+            background-color: #E8A0BF;
+            color: white;
+            border: none;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .filters {
+            margin-top: 15px;
+        }
+
+        #tasks {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Todo App</h2>
+
+        <input id="taskInput" placeholder="What needs doing?">
+        <button id="add">Add</button>
+
+        <div class="filters">
+            <button id="all">All</button>
+            <button id="active">Active</button>
+            <button id="completed">Completed</button>
+        </div>
+
+        <ul id="tasks"></ul>
+
+        <p id="count">0 items left</p>
+
+        <button id="clearCompleted">Clear completed</button>
+        <button id="clearAll">Clear all</button>
+    </div>
+
+   <script src="app.js"></script>
+
+</body>
+</html>
