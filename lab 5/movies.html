@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movies Watch List</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFF0F5;
+            text-align: center;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #C71585;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        input, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #E6A4C5;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            background-color: #DB7093;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #C71585;
+        }
+
+        .movie {
+            background-color: #FFF0F5;
+            border: 1px solid #F0B6D0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .movie h3 {
+            color: #C71585;
+        }
+
+        .stars {
+            font-size: 25px;
+            color: #E6A817;
+            text-align: center;
+        }
+
+        .movie p {
+            overflow-wrap: anywhere;
+        }
+
+        .delete-button {
+            background-color: #B22222;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>My Movies Watch List 🎬</h1>
+        <p>Keep track of the movies you watch!</p>
+
+        <div id="root"></div>
+    </div>
+
+    <!-- Link 1: React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
+    <!-- Link 2: React DOM -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Link 3: Babel -->
+    <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        const { useState } = React;
+
+        function App() {
+
+            const [movieName, setMovieName] = useState("");
+            const [movies, setMovies] = useState([]);
+
+            function addMovie() {
+                if (movieName.trim() !== "") {
+                    const newMovie = {
+                        id: Date.now(),
+                        name: movieName.trim(),
+                        review: "",
+                        rating: 0
+                    };
+
+                    setMovies([...movies, newMovie]);
+                    setMovieName("");
+                }
+            }
+
+            function removeMovie(id) {
+                setMovies(
+                    movies.filter(function(movie) {
+                        return movie.id !== id;
+                    })
+                );
+            }
+
+            function updateReview(id, newReview) {
+                setMovies(
+                    movies.map(function(movie) {
+                        if (movie.id === id) {
+                            return { ...movie, review: newReview };
+                        }
+
+                        return movie;
+                    })
+                );
+            }
+
+            function updateRating(id, newRating) {
+                setMovies(
+                    movies.map(function(movie) {
+                        if (movie.id === id) {
+                            return { ...movie, rating: newRating };
+                        }
+
+                        return movie;
+                    })
+                );
+            }
+
+            return (
+                <div>
+
+                    <h2>Add a Movie</h2>
+
+                    <input
+                        type="text"
+                        placeholder="Enter movie name"
+                        value={movieName}
+                        onChange={(e) => setMovieName(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                addMovie();
+                            }
+                        }}
+                    />
+
+                    <br />
+
+                    <button onClick={addMovie}>
+                        Add Movie
+                    </button>
+
+                    <h2>My Movies ({movies.length})</h2>
+
+                    {movies.length === 0 && (
+                        <p>You haven't added any movies yet!</p>
+                    )}
+
+                    {movies.map(function(movie) {
+                        return (
+                            <div className="movie" key={movie.id}>
+
+                                <h3>{movie.name}</h3>
+
+                                <button
+                                    className="delete-button"
+                                    onClick={() => removeMovie(movie.id)}
+                                >
+                                    Remove Movie
+                                </button>
+
+                                <hr />
+
+                                <h4>My Rating</h4>
+
+                                <div className="stars">
+                                    {[1, 2, 3, 4, 5].map(function(star) {
+                                        return (
+                                            <span
+                                                key={star}
+                                                onClick={() =>
+                                                    updateRating(movie.id, star)
+                                                }
+                                                style={{
+                                                    cursor: "pointer"
+                                                }}
+                                                title={star + " stars"}
+                                            >
+                                                {star <= movie.rating ? "⭐" : "☆"}
+                                            </span>
+                                        );
+                                    })}
+                                </div>
+
+                                <p>
+                                    Rating: {movie.rating} out of 5 stars
+                                </p>
+
+                                <h4>My Review</h4>
+
+                                <textarea
+                                    placeholder="Write your review..."
+                                    value={movie.review}
+                                    onChange={(e) =>
+                                        updateReview(movie.id, e.target.value)
+                                    }
+                                    rows="3"
+                                />
+
+                            </div>
+                        );
+                    })}
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(
+            document.getElementById("root")
+        );
+
+        root.render(<App />);
+
+    </script>
+
+</body>
+</html>
